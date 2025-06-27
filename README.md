@@ -34,3 +34,42 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+```bash
+my-next-app/
+│
+├── public/
+│   └── images/
+│       └── logo.png
+│
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                 # Home page
+│   │   ├── middleware.ts            # Role-based auth middleware
+│   │
+│   │   ├── login/
+│   │   │   └── page.tsx             # Login + Signup page
+│   │
+│   │   ├── notes/
+│   │   │   └── page.tsx             # Notes page for all users
+│   │
+│   │   ├── admin/
+│   │   │   └── dashboard/
+│   │   │       └── page.tsx         # Admin Dashboard page
+│   │
+│   │   ├── api/
+│   │   │   ├── login/
+│   │   │   │   └── route.ts         # Login API
+│   │   │   ├── signup/
+│   │   │   │   └── route.ts         # Signup API
+│   │
+│   ├── utils/
+│   │   └── db.ts                    # MongoDB connection logic
+│
+├── .env.local                       # Environment variables (MONGODB_URI, JWT_SECRET)
+├── tailwind.config.js              # Tailwind CSS config
+├── tsconfig.json                   # TypeScript config
+├── package.json
+└── next.config.js
+```
