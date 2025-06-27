@@ -8,8 +8,8 @@ if (!uri) {
   throw new Error('❌ MONGODB_URI is not defined in environment variables');
 }
 
-// Global is used in development to prevent multiple connections in dev hot reload
-let cached = globalThis as unknown as {
+// Reuse Mongo connection across hot reloads in development
+const cached = globalThis as unknown as {
   mongoClient?: MongoClient;
   db?: Db;
 };
