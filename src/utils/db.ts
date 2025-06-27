@@ -12,7 +12,7 @@ export async function connectToDatabase(): Promise<Db> {
     console.log(`✅ Connected to MongoDB: ${db.databaseName}`);
     return db;
   } catch (error) {
-    console.error('❌ MongoDB Connection Failed:', error);
+    console.error('❌ MongoDB connection error:', error);
     throw new Error('Failed to connect to MongoDB');
   }
 }
