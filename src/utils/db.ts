@@ -4,22 +4,29 @@ import { MongoClient, Db } from 'mongodb';
 const uri = process.env.MONGODB_URI!;
 const dbName = process.env.MONGODB_DB || 'myAppDb';
 
-// 👇 Global cache to reuse the client across function calls
-let cachedClient: MongoClient | null = null;
-let cachedDb: Db | null = null;
+if (!uri) {
+  throw new Error('❌ MONGODB_URI is not defined in environment variables');
+}
+
+// Global is used in development to prevent multiple connections in dev hot reload
+let cached = globalThis as unknown as {
+  mongoClient?: MongoClient;
+  db?: Db;
+};
 
 export async function connectToDatabase(): Promise<Db> {
-  if (cachedDb && cachedClient) {
-    return cachedDb;
+  if (cached.db) {
+    return cached.db;
   }
 
   const client = new MongoClient(uri);
   await client.connect();
+
   const db = client.db(dbName);
 
-  cachedClient = client;
-  cachedDb = db;
+  cached.mongoClient = client;
+  cached.db = db;
 
-  console.log(`🔌 Connected to MongoDB: ${db.databaseName}`);
+  console.log(`✅ Connected to MongoDB: ${db.databaseName}`);
   return db;
 }
