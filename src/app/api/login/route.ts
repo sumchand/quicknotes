@@ -8,6 +8,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export async function POST(req: NextRequest) {
   try {
+    // 🔍 Log env variables for Vercel debug
+    console.log('🔍 ENVIRONMENT DEBUG');
+    console.log('MONGODB_URI:', process.env.MONGODB_URI ? '✅ Set' : '❌ Missing');
+    console.log('MONGODB_DB:', process.env.MONGODB_DB || '❌ Not Set');
+    console.log('JWT_SECRET:', process.env.JWT_SECRET ? '✅ Set' : '❌ Missing');
+
     const { email, password } = await req.json();
 
     if (!email || !password) {
@@ -19,8 +25,6 @@ export async function POST(req: NextRequest) {
 
     const db: Db = await connectToDatabase();
     const user = await db.collection('users').findOne({ email });
-
- 
 
     if (!user) {
       return NextResponse.json(
@@ -51,10 +55,9 @@ export async function POST(req: NextRequest) {
         email: user.email,
         role: user.role,
       },
-      token, // Optional if you're using client-side token fallback
+      token,
     });
 
-    // Set JWT token in a secure cookie
     response.cookies.set({
       name: 'token',
       value: token,
@@ -62,7 +65,7 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 60 * 24, // 1 day
+      maxAge: 60 * 60 * 24,
     });
 
     return response;
