@@ -20,6 +20,8 @@ export async function POST(req: NextRequest) {
     const db: Db = await connectToDatabase();
     const user = await db.collection('users').findOne({ email });
 
+ 
+
     if (!user) {
       return NextResponse.json(
         { success: false, message: 'User not found' },
